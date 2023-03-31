@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.matchesPattern;
 public class TesteUser { // Início da classe
     // Atributos
     String ct = "application/json"; // content type
-    String uriUser = "https://petstore.swagger.io/v2/user";
+    String uriUser = "https://petstore.swagger.io/v2/user/";
 
     // Funções e métodos
 
@@ -70,7 +70,7 @@ public class TesteUser { // Início da classe
     .then()
                 .log().all()
                 .statusCode(200)
-                .body("id", is("du"))
+                .body("id", is(1373709898))
                 .body("email", is("almeida@test.com"))
                 .body("phone", is("telefone"))
                 .body("senha", is("123456"))
