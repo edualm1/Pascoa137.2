@@ -10,15 +10,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static io.restassured.RestAssured.given;
-
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.*;
 
 // Classe
 public class TesteUser { // Início da classe
     // Atributos
-    String ct = "application/json"; // content type
-    String uriUser = "https://petstore.swagger.io/v2/user/";
+    static String ct = "application/json"; // content type
+    static String uriUser = "https://petstore.swagger.io/v2/user/";
 
     // Funções e métodos
 
@@ -72,10 +70,52 @@ public class TesteUser { // Início da classe
                 .statusCode(200)
                 .body("id", is(1373709898))
                 .body("email", is("almeida@test.com"))
-                .body("phone", is("telefone"))
-                .body("senha", is("123456"))
+                .body("phone", is("11912345678"))
+                .body("password", is("123456"))
     ;
+    }       // fim do get user (consultar usuario)
+
+    @Test
+    public void testarAlterarUser() throws IOException {
+        String jsonBody = lerArquivoJson("src/test/resources/json/user2.json");
+
+        String userId = "1373709898";
+        String username = "du";
+
+        given()
+                .contentType(ct)
+                .log().all()
+                .body(jsonBody)
+        .when()
+                .put(uriUser + username)
+        .then()
+                .log().all()
+                .statusCode(200)
+                .body("code", is(200))
+                .body("type", is("unknown"))
+                .body("message", is(userId))
+        ;       // fim do put User
     }
+
+    @Test
+    public void testarExcluirUser (){
+        String username = "du";
+
+        given()
+                .contentType(ct)
+                .log().all()
+        .when()
+                .delete(uriUser + username)
+        .then()
+                .statusCode(200)
+                .body("code", is(200))
+                .body("type", is("unknown"))
+                .body("message", is("username"))
+        ;
+
+    }
+
+
 
 } // fim da classe
 
